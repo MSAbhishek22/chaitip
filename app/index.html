@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChaiTip — Tip your chaiwala in BCH</title>
+<meta name="description" content="Tip a street vendor in Bitcoin Cash. No middleman, no fee — the whole tip lands in the vendor's wallet, on-chain, in seconds. Built for BCH BLAZE 2026.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- BLAZE MANDATORY BANNER (DoraHacks rules): presentation + repo + CashTokens address.
+     Items that do not exist yet are shown as labelled text, NEVER as fake links.
+     They become links at deploy/submit time — see submission/SUBMISSION_DRAFT.md. -->
+<header class="blaze-banner" role="banner">
+  <p><strong>BCH BLAZE 2026 · Mainnet Track</strong> — ChaiTip</p>
+  <ul>
+    <li><a href="https://docs.google.com/presentation/d/1Yfuk9CJkf4U9M_WukcELhumWgj3Ak6345Ewy8hSp-Hk/edit?usp=sharing" target="_blank" rel="noopener">Project presentation (Widget Factory template)</a></li>
+    <li>GitHub repo: <span class="pending">github.com/MSAbhishek22/chaitip — link added when the repo is published</span></li>
+    <li>EMBER2026 donations: <span class="pending">CashTokens address — added before submission</span></li>
+  </ul>
+</header>
+
+<main class="stall-page">
+  <nav class="tabs" aria-label="Views">
+    <button id="tab-tip" class="tab active" aria-pressed="true">Tip a stall</button>
+    <button id="tab-create" class="tab" aria-pressed="false">Open your stall</button>
+  </nav>
+
+  <!-- ============ TIP VIEW ============ -->
+  <section id="view-tip" aria-labelledby="stall-name">
+    <div class="signboard">
+      <p class="kicker">STREET STALL · BITCOIN CASH</p>
+      <h1 id="stall-name">Ramesh Chai</h1>
+      <p id="stall-meta" class="stall-meta">Meerut · Cutting chai since 2009</p>
+      <p id="stall-address" class="stall-address"></p>
+    </div>
+
+    <div class="demo-note" id="demo-note" hidden>
+      <strong>DEMO STALL — testnet only.</strong> Tips here use play BCH on the testnet.
+      No real money moves. <button id="demo-note-off" class="linklike">Create a real stall instead</button>
+    </div>
+
+    <section class="amounts" aria-label="Tip amount">
+      <h2>How much chai love?</h2>
+      <div class="presets" role="group" aria-label="Preset tip amounts">
+        <button class="preset" data-inr="5" aria-pressed="false">₹5<small>one cutting chai</small></button>
+        <button class="preset" data-inr="10" aria-pressed="true">₹10<small>chai + biscuit</small></button>
+        <button class="preset" data-inr="20" aria-pressed="false">₹20<small>make it a double</small></button>
+        <button class="preset" data-inr="custom" aria-pressed="false">Custom<small>your call</small></button>
+      </div>
+      <div id="custom-wrap" class="custom-wrap" hidden>
+        <label for="custom-inr">Custom amount (₹)</label>
+        <input id="custom-inr" type="number" inputmode="decimal" min="1" max="10000" step="1" placeholder="e.g. 15">
+        <p id="custom-error" class="error" role="alert" hidden></p>
+      </div>
+      <p id="rate-line" class="rate-line">Fetching live BCH rate…</p>
+      <p id="amount-line" class="amount-line" aria-live="polite"></p>
+    </section>
+
+    <section class="pay" aria-label="Pay">
+      <div class="mode-row">
+        <button id="mode-live" class="mode active" aria-pressed="true">Live · mainnet BCH</button>
+        <button id="mode-demo" class="mode" aria-pressed="false">Demo · testnet, no real money</button>
+      </div>
+
+      <button id="connect-btn" class="primary">Connect wallet (WizardConnect)</button>
+      <p class="hint">Paytaca or Selene wallet on your phone. Your keys never leave your wallet — ChaiTip only asks it to sign one payment.</p>
+      <div id="pair-panel" class="pair-panel" hidden>
+        <ol id="stepper" class="stepper">
+          <li data-step="pair">Pair — scan the QR with your wallet</li>
+          <li data-step="approve">Approve — wallet confirms the session</li>
+          <li data-step="sign">Sign — wallet signs the tip</li>
+          <li data-step="broadcast">Broadcast — tip lands on-chain</li>
+        </ol>
+        <div class="qr-box"><canvas id="pair-qr" width="180" height="180" aria-label="WizardConnect pairing QR code"></canvas></div>
+        <p id="pair-status" class="pair-status" role="status">Waiting for your wallet to scan…</p>
+        <button id="pair-cancel" class="secondary">Cancel pairing</button>
+      </div>
+
+      <button id="tip-btn" class="primary big" disabled>Tip ₹10</button>
+      <p id="tip-error" class="error" role="alert" hidden></p>
+
+      <details class="alt-pay">
+        <summary>No wallet handy? Pay by address instead</summary>
+        <p>Send the exact amount to the stall address from any BCH wallet, then paste the transaction ID below and we will verify it on-chain.</p>
+        <div class="qr-box"><canvas id="pay-qr" width="160" height="160" aria-label="Stall payment QR code"></canvas></div>
+        <p class="mono" id="pay-address"></p>
+        <label for="txid-input">Transaction ID</label>
+        <input id="txid-input" type="text" placeholder="Paste the txid from your wallet" autocomplete="off" spellcheck="false">
+        <button id="verify-btn" class="secondary">Verify my tip on-chain</button>
+        <p id="verify-result" class="verify-result" role="status" hidden></p>
+      </details>
+    </section>
+
+    <section class="glass" aria-label="Tip glass">
+      <h2>The glass fills with every tip</h2>
+      <canvas id="scene" width="560" height="260" role="img" aria-label="3D chai glass. Each gold coin is a confirmed tip."></canvas>
+      <div id="scene-fallback" class="scene-fallback" hidden>
+        <div class="css-glass" aria-hidden="true">☕</div>
+        <p id="fallback-count">0 tips today</p>
+      </div>
+      <p class="hint">Drag the glass to look around. Tap a coin to see its receipt. (3D needs WebGL; if your device cannot do it, the count above is the same data.)</p>
+    </section>
+
+    <section class="receipts" aria-label="Receipts">
+      <h2>Receipts</h2>
+      <div id="receipt-list"></div>
+      <p id="receipt-empty" class="muted">No tips yet. The first tip prints its ticket here.</p>
+    </section>
+
+    <section class="feed" aria-label="Tip feed">
+      <h2>Today at this stall</h2>
+      <ul id="tip-feed"></ul>
+      <p id="feed-empty" class="muted">Nothing yet — be the first.</p>
+    </section>
+
+    <section class="compare" aria-label="Why BCH">
+      <h2>Why tip in BCH?</h2>
+      <table>
+        <thead><tr><th></th><th>UPI / card</th><th>BCH tip</th></tr></thead>
+        <tbody>
+          <tr><th>Fee on a ₹10 tip</th><td>~₹0.20–0.30 to middlemen</td><td>Less than a paisa</td></tr>
+          <tr><th>Settlement</th><td>Hours to days</td><td>Seconds</td></tr>
+          <tr><th>Who holds the money</th><td>An app / a bank</td><td>The vendor, directly</td></tr>
+          <tr><th>Account needed</th><td>Yes</td><td>No — just a wallet</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="how" aria-label="How it works">
+      <h2>How it works</h2>
+      <ol>
+        <li><strong>Pick an amount.</strong> ₹5, ₹10, ₹20 — priced live in BCH.</li>
+        <li><strong>Connect your wallet.</strong> Paytaca or Selene, via WizardConnect. Nothing to install here.</li>
+        <li><strong>Approve one payment.</strong> The tip goes straight to the vendor's address. A ticket receipt proves it on-chain.</li>
+      </ol>
+    </section>
+
+    <section class="demo-stalls" aria-label="Demo stalls">
+      <h2>Try it — demo stalls (testnet)</h2>
+      <p class="muted">Demo stalls are for practice. Real stalls are created under “Open your stall”.</p>
+      <ul id="demo-stall-list"></ul>
+    </section>
+  </section>
+
+  <!-- ============ CREATE VIEW ============ -->
+  <section id="view-create" hidden aria-labelledby="create-heading">
+    <h2 id="create-heading">Open your stall</h2>
+    <p>Sixty seconds, no account. Your BCH address is the till — tips go straight to it.</p>
+    <form id="create-form" novalidate>
+      <label for="stall-name-input">Stall name</label>
+      <input id="stall-name-input" type="text" maxlength="60" placeholder="e.g. Ramesh Chai" required>
+      <label for="stall-tagline-input">One line about the stall</label>
+      <input id="stall-tagline-input" type="text" maxlength="90" placeholder="e.g. Cutting chai since 2009">
+      <label for="stall-location-input">Location</label>
+      <input id="stall-location-input" type="text" maxlength="60" placeholder="e.g. Meerut">
+      <label for="stall-address-input">Your BCH address (cashaddr)</label>
+      <input id="stall-address-input" type="text" placeholder="bitcoincash:q…" autocomplete="off" spellcheck="false" required>
+      <p class="hint">Find it in Paytaca / Selene under Receive. We check it is a valid BCH address before saving. <strong>Never paste a seed phrase or private key anywhere — not here, not anywhere.</strong></p>
+      <p id="create-errors" class="error" role="alert" hidden></p>
+      <button type="submit" class="primary big">Open my stall</button>
+    </form>
+    <div id="created-panel" class="created-panel" hidden>
+      <h3>Your stall is open 🎉</h3>
+      <p>Share this link or print the QR and stick it on the stall.</p>
+      <p class="mono" id="created-link"></p>
+      <div class="qr-box"><canvas id="created-qr" width="180" height="180" aria-label="Your stall QR code"></canvas></div>
+      <button id="copy-link-btn" class="secondary">Copy stall link</button>
+      <button id="view-stall-btn" class="secondary">View my stall page</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><strong>Honest limits.</strong> A live tip needs a funded BCH wallet (Paytaca/Selene) and a few rupees of BCH — ChaiTip never holds your money and never asks for keys. Demo mode uses testnet play-BCH. The WizardConnect live handshake is implemented with the real SDK and is awaiting its first real-wallet test — the connect screen says so while pairing. Rates come from CoinGecko's free public feed, with a labelled fallback when it is unreachable.</p>
+  <p>ChaiTip — built for BCH BLAZE 2026 (Mainnet track). Free, open, no accounts, no custody.</p>
+</footer>
+
+<script src="dist/main.js" defer></script>
+</body>
+</html>
