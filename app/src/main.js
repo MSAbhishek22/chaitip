@@ -395,4 +395,12 @@ function boot() {
   initGlass();
 }
 
-document.addEventListener('DOMContentLoaded', boot);
+// Boot immediately if the document is already parsed. The bundle's module
+// graph contains top-level await in a dependency, so this module can finish
+// evaluating AFTER DOMContentLoaded has already fired — listening for the
+// event alone would silently never boot (found live, 2026-11-12).
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
