@@ -1,6 +1,15 @@
 # Test Report — ChaiTip
 
-**Date:** 2026-11-05 (evening IST) · **Environment:** Muse Linux sandbox, Node v24.22.1 · **Commands:** `npm test`, `npm run build`, `python3 -m http.server` + curl.
+**Date:** 2026-11-05 (evening IST), re-verified 2026-11-12 ~09:51 IST · **Environment:** Muse Linux sandbox, Node v24.22.1, npm 10.9.4 · **Commands:** `npm test`, `npm run build`, `python3 -m http.server` + curl.
+
+## Re-verification — 2026-11-12 (this pass)
+
+- **Tests — 10/10 PASS, 0 fail, exit 0** (`npm test`, duration 2,206 ms). Same 10 named tests as 5 Nov.
+- **Build — PASS, exit 0** (esbuild, 533 ms): `dist/main.js` 450.6 KiB, `dist/scene-BXLCZWHB.js` 544.6 KiB, `dist/chunk-JASUU3JV.js` 356.2 KiB, `dist/chunk-OOJM4CTU.js` 638 B, `dist/MockNetworkProvider-SBQNISNV.js` 1.3 KiB. Total ~1.4 MB.
+- **Syntax — PASS:** `node --check` on all 5 source files.
+- **Serve smoke — PASS (HTTP only):** port 8132; `index.html` 200 (10,344 B), `style.css` 200 (9,613 B), `dist/main.js` / `scene` / chunk all 200. Key IDs present (`scene`, `stall-address`, `stall-name`, `tip-btn` via `tip-btn`/`connect-btn`, `tip-feed`).
+- **Secret scan — PASS:** only benign warnings/comments, no real secret, no `.env`.
+- Browser render, live WizardConnect handshake, live mainnet/testnet tip, verify-by-txid: still **NOT verified** (see gaps below).
 
 ## Automated tests — 10/10 PASS
 

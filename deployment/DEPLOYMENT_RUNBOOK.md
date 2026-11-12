@@ -1,6 +1,14 @@
 # Deployment Runbook — ChaiTip
 
-**Status:** NOT DEPLOYED. This runbook is the plan for the deploy step (BUILD_PLAN.md step 5). No account has been created and no deploy has been attempted in this prep session.
+**Status:** NOT DEPLOYED — re-verified 2026-11-12. This runbook is the plan for the deploy step (BUILD_PLAN.md step 5). No account has been created and no deploy has been attempted. A static deploy IS genuinely possible without credentials in the code (no backend, no env vars, no secrets — see below); it still needs a hosting account / browser tap by the parent/user. Do NOT deploy with invented credentials.
+
+## Static-deploy readiness (verified 2026-11-12)
+
+- Build is reproducible: `cd app && npm ci && npm run build` → `dist/main.js` (450.6 KiB) + `scene-*.js` (544.6 KiB, lazy) + 3 chunks, total ~1.4 MB. Exit 0.
+- Tests gate the deploy: `npm test` → 10/10 PASS must hold on the exact commit being deployed.
+- Publish directory is `app/` itself (contains `index.html`, `style.css`, and `dist/` after build). No server, no database, no env vars.
+- Providers (free, no card): Netlify Drop / Netlify Git, Cloudflare Pages, Vercel static, GitHub Pages — any works. STOP if a card/payment is asked.
+- `deployment/RELEASE_MANIFEST.json` exists as a null-filled template; fill it ONLY from the real deploy receipt.
 
 ## Target
 
@@ -11,7 +19,7 @@
 ## Steps (user tap / agent with saved session)
 
 1. **Create the GitHub repo** `MSAbhishek22/chaitip` (public). Push this folder's contents (except `node_modules/`, `dist/` — `dist/` is rebuilt; `.gitignore` already covers both). Record the commit SHA.
-2. **Build:** in `app/`, run `npm ci` then `npm run build`. Verify `dist/bundle.js` exists and `npm test` passes.
+2. **Build:** in `app/`, run `npm ci` then `npm run build`. Verify `dist/main.js` exists (esbuild code-split output: `main.js` + `scene-*.js` + chunks, NOT a single `bundle.js`) and `npm test` passes (10/10).
 3. **Deploy:** connect the repo to Netlify (or drag the `app/` folder into Netlify Drop). Build command: `npm run build`; publish directory: `app/` (or `app/dist` + copy `index.html`/`style.css` — simplest is publish `app/` with build output inside it).
 4. **Verify from a fresh browser session** (not the dev machine's localhost):
    - Page loads over HTTPS with no console errors.

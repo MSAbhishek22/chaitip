@@ -4,7 +4,7 @@
 
 | Layer | Choice | Why |
 |---|---|---|
-| App | Static single-page app (`app/index.html` + `app/dist/bundle.js`) | Deployable to any free static host (Netlify / Cloudflare Pages / Render static). No server to pay for or keep awake. |
+| App | Static single-page app (`app/index.html` + `app/dist/main.js` + chunks) | Deployable to any free static host (Netlify / Cloudflare Pages / Render static). No server to pay for or keep awake. |
 | BCH SDK | `mainnet-js` (npm, bundled with esbuild) | Address validation (`isValidAddress`), cashaddr conversion, `Wallet`/`TestNetWallet`, provider history lookup, fee/exchange-rate helpers. Verified loading in Node 24 in this session. |
 | Wallet connect | `@wizardconnect/core` (Riften Labs, npm, bundled) | The BLAZE-mandated WizardConnect integration. Dapp relay (`initiateDappRelay`), key-exchange URI + QR pairing, HD-wallet session (`hdwalletv1`), `signTransaction` round-trip. Verified package loads; live wallet handshake pending a real phone test. |
 | 3D | `three` (npm, bundled) | Chai glass + falling coins scene, lazy-loaded, pointer-drag orbit, 2D CSS fallback when WebGL is unavailable. |
@@ -42,7 +42,7 @@ app/
   src/wallet.js         — WizardConnect dapp relay + demo testnet wallet + verify-by-txid
   src/scene.js          — Three.js chai-glass coin fountain (lazy, fallback)
   src/main.js           — UI wiring, routing (?stall=), feed, rate fetch
-  dist/bundle.js        — esbuild bundle (built, not hand-edited)
+  dist/main.js + chunks — esbuild bundle, code-split (built, not hand-edited)
   tests/test.mjs        — node:test suite for src/bch.js
   package.json          — deps: mainnet-js, @wizardconnect/core, three, qrcode; dev: esbuild
 ```

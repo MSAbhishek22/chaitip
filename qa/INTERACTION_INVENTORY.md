@@ -1,6 +1,6 @@
 # Interaction Inventory — ChaiTip (Rulebook §4.1)
 
-**App:** `app/index.html` + `app/dist/bundle.js` (built 2026-11-05). Every visible control is listed; nothing is decorative.
+**App:** `app/index.html` + `app/dist/main.js` + chunks (built 2026-11-05, rebuilt/verified 2026-11-12). Every visible control is listed; nothing is decorative.
 
 | Page / component | Action | Expected behaviour | Implementation / destination | Validation & errors | Test evidence | Status |
 |---|---|---|---|---|---|---|

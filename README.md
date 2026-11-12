@@ -12,7 +12,7 @@
 cd app
 npm install
 npm test        # node:test suite (pure logic + tx-builder verification)
-npm run build   # esbuild -> dist/bundle.js
+npm run build   # esbuild -> dist/main.js + chunks (code-split)
 npm start       # serves on http://localhost:8130
 ```
 
