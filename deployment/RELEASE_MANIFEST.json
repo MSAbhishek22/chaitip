@@ -1,1 +1,18 @@
-{"backend_url":null,"build_id":null,"database_migration_version":null,"deployed_commit_sha":null,"deployment_provider":null,"deployment_timestamp_ist":null,"deployment_timestamp_utc":null,"github_repository_url":null,"hackathon":"BCH BLAZE 2026 (DoraHacks) — Mainnet track, solo","notes":"TEMPLATE ONLY — not deployed as of 2026-11-12. All null fields must be filled from a real deploy + fresh-browser verification. Do not invent a URL, SHA, or timestamp. Local verification on 2026-11-12: npm test 10/10 PASS, npm run build PASS (dist/main.js 450.6 KiB + chunks), serve smoke PASS on localhost only — localhost is NOT a live deployment per Rulebook §5.","production_branch":null,"production_url":null,"project":"ChaiTip","smoke_test_result":null,"smoke_test_timestamp":null,"version":"0.1.0-pre-submission"}
+{
+  "backend_url": null,
+  "build_id": "chaitip-2krks8qfn-m-s-abhisheks-projects.vercel.app",
+  "database_migration_version": null,
+  "deployed_commit_sha": "41a9d313",
+  "deployment_provider": "Vercel (project chaitip, team 'M S Abhishek's projects', Hobby free)",
+  "deployment_timestamp_ist": "2026-11-12 ~10:53 IST",
+  "deployment_timestamp_utc": "2026-11-12 ~05:23 UTC",
+  "github_repository_url": "https://github.com/MSAbhishek22/chaitip",
+  "hackathon": "BCH BLAZE 2026 (DoraHacks) \u2014 Mainnet track, solo",
+  "notes": "Deployed from GitHub main @ 41a9d313 via Vercel Git import (Root Directory app, Framework Other, Build npm run build, Output '.'). Vercel identity verification completed with a user-supplied code (value not recorded). This manifest update is committed AFTER the deploy; the deployed code commit remains 41a9d313.",
+  "production_branch": "main",
+  "production_url": "https://chaitip.vercel.app",
+  "project": "ChaiTip",
+  "smoke_test_result": "PASS \u2014 public fetch of https://chaitip.vercel.app returned the full ChaiTip UI (title, RAMESH CHAI stall, tip buttons, receipts, 3D glass section) with no login wall, verified from outside the owner's signed-in browser at ~10:53 IST 12 Nov 2026. Vercel Authentication (Deployment Protection) disabled in project settings and confirmed by toast. Wallet connect + real tip NOT yet tested (needs the user's phone wallet).",
+  "smoke_test_timestamp": "2026-11-12 ~10:53 IST",
+  "version": "0.1.0"
+}
