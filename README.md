@@ -1,9 +1,11 @@
-# ChaiTip — BCH BLAZE 2026
+# ChaiTip — Tip your chaiwala in BCH
 
 **Tip your chaiwala in BCH. No middleman, no fee — the whole tip lands in the vendor's wallet, on-chain, in seconds.**
 
+**Live demo:** https://chaitip.vercel.app
+
 - **Hackathon:** BCH BLAZE 2026 (DoraHacks), Mainnet track, solo.
-- **Status:** `IN_PROGRESS` — core product built and tested in the sandbox; live deploy, live wallet test, video, and submission are still ahead (see `BUILD_PLAN.md`).
+- **Status:** Live at https://chaitip.vercel.app (verified 17 Nov 2026) and submitted to BCH BLAZE 2026. A live wallet test with a funded BCH wallet is still the user's phone test — see Honest limits below.
 - **Stack:** static app, `mainnet-js` + `@wizardconnect/core` + Three.js + `qrcode`, no backend, no accounts, no custody.
 
 ## Quick start (local)
