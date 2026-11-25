@@ -35,6 +35,21 @@
       <p id="stall-address" class="stall-address"></p>
     </div>
 
+    <!-- 3D TIP GLASS — first-load signature (J8): the real Three.js glass
+         lives here, in the hero, so it draws on first load with no click.
+         It was below the pay form before; the scene init in main.js is
+         position-independent (it finds #scene wherever it sits). -->
+    <section class="glass" aria-label="Tip glass">
+      <h2>The glass fills with every tip</h2>
+      <canvas id="scene" width="560" height="260" role="img" aria-label="3D chai glass. Each gold coin is a confirmed tip."></canvas>
+      <div id="scene-fallback" class="scene-fallback" hidden>
+        <div class="css-glass" aria-hidden="true">☕</div>
+        <p id="fallback-count">0 tips today</p>
+      </div>
+      <p class="hint">Drag the glass to look around. Tap a coin to see its receipt. (3D needs WebGL; if your device cannot do it, the count above is the same data.)</p>
+      <p class="scroll-cue"><a href="#receipts">Scroll ↓ — pick an amount, tip, and see the receipt</a></p>
+    </section>
+
     <div class="demo-note" id="demo-note" hidden>
       <strong>DEMO STALL — testnet only.</strong> Tips here use play BCH on the testnet.
       No real money moves. <button id="demo-note-off" class="linklike">Create a real stall instead</button>
@@ -92,17 +107,7 @@
       </details>
     </section>
 
-    <section class="glass" aria-label="Tip glass">
-      <h2>The glass fills with every tip</h2>
-      <canvas id="scene" width="560" height="260" role="img" aria-label="3D chai glass. Each gold coin is a confirmed tip."></canvas>
-      <div id="scene-fallback" class="scene-fallback" hidden>
-        <div class="css-glass" aria-hidden="true">☕</div>
-        <p id="fallback-count">0 tips today</p>
-      </div>
-      <p class="hint">Drag the glass to look around. Tap a coin to see its receipt. (3D needs WebGL; if your device cannot do it, the count above is the same data.)</p>
-    </section>
-
-    <section class="receipts" aria-label="Receipts">
+    <section class="receipts" id="receipts" aria-label="Receipts">
       <h2>Receipts</h2>
       <div id="receipt-list"></div>
       <p id="receipt-empty" class="muted">No tips yet. The first tip prints its ticket here.</p>
